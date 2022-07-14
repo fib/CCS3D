@@ -6,6 +6,8 @@ Link to website will be [here](https://cdorais1.github.io/CCS3D/)
 
 # TO DO 
 
+## Basic Functionality
+
 1. Load DICOM file correctly and display it
 
 2. Add functionality for switching between Sagittal, Coronal, and Axial views
@@ -14,4 +16,13 @@ Link to website will be [here](https://cdorais1.github.io/CCS3D/)
 
 4. Add thresholding feature to brush tool
 
-5.) Add intelligent brush feature (see issue)
+
+## Advanced Functionality Detailed in Issue Tab
+
+- Add intelligent brush feature 
+
+- Add tool state restoration from json file
+
+- Enable multi-user access from a server
+
+- Enable in session sorting of DICOM images after upload
