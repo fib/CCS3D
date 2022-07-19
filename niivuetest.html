@@ -1,26 +1,38 @@
 <html>
-  <head>
-    <style>
-      body 
-      {
-        background-color: black;
-        margin: 0;
-        padding: 0;
-        height: 100%;
-      }
-    </style>
-    
-    <script type="text/javascript" src="https://niivue.github.io/niivue/features/niivue.umd.js"></script>      
-    <script type="text/javascript">
-    window.onload = function()
-    {
-      let test = new niivue.Niivue();
-      test.attachTo(testCanvas);
-      test.setSliceType(test.sliceTypeRender);
-      
-    </script>
+    <head>
+        <style>
+            body {
+                background-color: black;
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+        </style>
+    </head>
     <body>
-      <!-- nothing fancy here, just need something to work-->
-      <canvas id='testCanvas' style='height:100%; width:100%'></canvas>
+        <script type="text/javascript" src="https://niivue.github.io/niivue/features/niivue.umd.js"></script>
+        <!-- actual functional code to test loading capabilities-->
+        <script>
+
+            window.onload = function () {
+                document.body.addEventListener('dragover', onDragOver);
+                document.body.addEventListener('drop', onDrop);
+            };
+
+            function onDragOver(e) {
+                // stop browser processing right away
+                e.stopPropagation();
+                e.preventDefault();
+            };
+            function onDrop(e) {
+                var f = e.dataTransfer.files[i];
+                let test = new niivue.Niivue();
+                test.attachTo(testCanvas);
+                test.setSliceType(test.sliceTypeRender);
+            };
+        </script>
+
+    <!-- nothing fancy here, just need something to work-->
+    <canvas id='testCanvas' style='height:100%; width:100%'></canvas>
     </body>
-    </html> 
+</html> 
