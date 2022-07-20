@@ -10,9 +10,7 @@
         </style>
     </head>
     <body>
-        <!--<script type="text/javascript" src="https://niivue.github.io/niivue/features/niivue.umd.js"></script>-->
-        <!-- found on https://niivue.github.io/niivue/devdocs/-->
-        <script type="text/javascript" src="https://unpkg.com/@niivue/niivue@0.24.2/dist/niivue.umd.js"></script>
+        <script type="text/javascript" src="https://niivue.github.io/niivue/features/niivue.umd.js"></script>
         <!-- actual functional code to test loading capabilities-->
         <script>
 
@@ -20,39 +18,26 @@
                 document.body.addEventListener('dragover', onDragOver);
                 document.body.addEventListener('drop', onDrop);
 
-
+                let test = new niivue.Niivue();
+                test.attachTo(`testCanvas`);
+                test.setSliceType(test.sliceTypeRender);
             };
 
             function onDragOver(e) {
-                // Stop browser processing right away
+                // stop browser processing right away
                 e.stopPropagation();
                 e.preventDefault();
             };
-
+            //TODO
             function onDrop(e) {
-                console.log("Is this working?");
-                let f = e.dataTransfer.files[0];
-                console.log("file name: ");
-                console.log(f);
-                let volumeList = [];
-                for (let i = 0; i < e.dataTransfer.files.length; i++) {
-                    
-                    let temp = "./" + e.dataTransfer.files[i].name;
-                     let url = temp;
-                    console.log("temp: " + temp);
-                    volumeList.push({ url, crossOrigin: null });
-                }
-                console.log("(line 46) volumeList: ");
-                console.log(volumeList);
-                let test = new niivue.Niivue();
-                test.attachTo(`testCanvas`);
-                test.loadVolumes(volumeList);
-                test.setSliceType(test.sliceTypeMultiPlanar);
+                //var f = e.dataTransfer.files[i];
+
             };
         </script>
 
-        <!-- nothing fancy here, just need something to work-->
-        <canvas id='testCanvas' style='height:100%; width:100%'></canvas>
+    <!-- nothing fancy here, just need something to work-->
+    <canvas id='testCanvas' style='height:100%; width:100%'></canvas>
     </body>
 </html> 
+
 
