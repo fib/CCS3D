@@ -17,6 +17,10 @@
             window.onload = function () {
                 document.body.addEventListener('dragover', onDragOver);
                 document.body.addEventListener('drop', onDrop);
+
+                let test = new niivue.Niivue();
+                test.attachTo(`testCanvas`);
+                test.setSliceType(test.sliceTypeRender);
             };
 
             function onDragOver(e) {
@@ -24,11 +28,10 @@
                 e.stopPropagation();
                 e.preventDefault();
             };
+            //TODO
             function onDrop(e) {
-                var f = e.dataTransfer.files[i];
-                let test = new niivue.Niivue();
-                test.attachTo(testCanvas);
-                test.setSliceType(test.sliceTypeRender);
+                //var f = e.dataTransfer.files[i];
+
             };
         </script>
 
@@ -36,3 +39,4 @@
     <canvas id='testCanvas' style='height:100%; width:100%'></canvas>
     </body>
 </html> 
+
