@@ -4,72 +4,76 @@
     <script type="text/javascript" src="https://unpkg.com/cornerstone-wado-image-loader"></script>
     <script>
 
-    window.onload = function () {
-        document.body.addEventListener('dragover', onDragOver);
-        document.body.addEventListener('drop', onDrop);
-    }
-
-    function onDragOver(e) {
-
-        // stop browser processing right away
-        e.stopPropagation();
-        e.preventDefault();
-
-    };
-
-    function onDrop(e) {
-
-        e.stopPropagation();
-        e.preventDefault();
+        window.onload = function () {
+            
+            document.body.addEventListener('dragover', onDragOver);
+            document.body.addEventListener('drop', onDrop);
 
 
-        imageIds = [];
-
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
-
-            var f = e.dataTransfer.files[i];
-            imageIds.push(cornerstoneWADOImageLoader.wadouri.fileManager.add(f));
         }
 
-        const renderingEngineId = 'r';
-        const renderingEngine = new cornerstone3dCore.RenderingEngine(renderingEngineId);
+        async function run() {
 
-        const viewportId = 'viewer';
+            await cornerstone3dCore.init();
 
-        var element = document.getElementById('viewer');
+            setup();
 
-        const viewportInput = {
-            viewportId,
-            element,
-            type: cornerstone3dCore.Enums.ViewportType.STACK,
+
         };
 
+        function setup() {
+
+            const renderingEngineId = 'r';
+            renderingEngine = new cornerstone3dCore.RenderingEngine(renderingEngineId);
+
+            const viewportId = 'viewer';
+
+            var element = document.getElementById('viewer');
+
+            const viewportInput = {
+                viewportId,
+                element,
+                type: cornerstone3dCore.Enums.ViewportType.STACK,
+            };
+
+            renderingEngine.enableElement(viewportInput);
 
 
-        renderingEngine.enableElement(viewportInput);
+        };
 
-        load_volume();
+        function onDragOver(e) {
 
-    }
+            // stop browser processing right away
+            e.stopPropagation();
+            e.preventDefault();
 
-    async function run() {
-        await cornerstone3dCore.init();
-    }
+        };
 
-    async function load_volume() {
+        function onDrop(e) {
 
+            e.stopPropagation();
+            e.preventDefault();
 
-        // TODO
-        volume = await cornerstone3dCore.volumeLoader.createAndCacheVolume(volumeId, {
-            imageIds,
-        });
+            files = e.dataTransfer.files;
+            file = files[0];
+            imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
 
-        volume.load();
+            load_volume();
 
-    }
-    
-    run();
+        }
 
+        async function load_volume() {
+
+            var viewport = renderingEngine.getViewport('viewer');
+
+            viewport.setStack([imageId]).then(() => {
+                viewport.render();
+            });
+
+        }
+
+        run();
+        
     </script>
 </head>
 <body style='margin:0px;padding:0px;background:black'>
