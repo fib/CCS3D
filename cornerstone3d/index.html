@@ -1,0 +1,82 @@
+<html>
+<head>
+    <script type="text/javascript" src="cornerstone3d.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/cornerstone-wado-image-loader"></script>
+    <script>
+
+        window.onload = function () {
+            
+            document.body.addEventListener('dragover', onDragOver);
+            document.body.addEventListener('drop', onDrop);
+
+
+        }
+
+        async function run() {
+
+            await cornerstone3dCore.init();
+
+            setup();
+
+
+        };
+
+        function setup() {
+
+            const renderingEngineId = 'r';
+            renderingEngine = new cornerstone3dCore.RenderingEngine(renderingEngineId);
+
+            const viewportId = 'viewer';
+
+            var element = document.getElementById('viewer');
+
+            const viewportInput = {
+                viewportId,
+                element,
+                type: cornerstone3dCore.Enums.ViewportType.STACK,
+            };
+
+            renderingEngine.enableElement(viewportInput);
+
+
+        };
+
+        function onDragOver(e) {
+
+            // stop browser processing right away
+            e.stopPropagation();
+            e.preventDefault();
+
+        };
+
+        function onDrop(e) {
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            files = e.dataTransfer.files;
+            file = files[0];
+            imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+
+            load_volume();
+
+        }
+
+        async function load_volume() {
+
+            var viewport = renderingEngine.getViewport('viewer');
+
+            viewport.setStack([imageId]).then(() => {
+                viewport.render();
+            });
+
+        }
+
+        run();
+        
+    </script>
+</head>
+<body style='margin:0px;padding:0px;background:black'>
+    <div id="viewer" style="width: 100%; height:100%"></div>
+</body>
+</html>
