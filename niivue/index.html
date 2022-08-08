@@ -14,9 +14,11 @@
             window.onload = function () {
                 document.body.addEventListener('dragover', onDragOver);
 
-                //implementation of 3d view
+                //instance of niivue
                 nv = new niivue.Niivue();
+                //attach object to viewer
                 nv.attachTo(`viewer`);
+                //set default view to coronal
                 nv.setSliceType(nv.sliceTypeCoronal);
                 
             };
@@ -30,15 +32,19 @@
 
 
             function changeview() {
+                //gets the viewer box text for calling the setslicetype 
                 var combobox = document.getElementById('view');
                 var selection = combobox.selectedOptions[0].outerText;
 
+                //variable for  calling the right slice/view type
                 var type = eval('nv.sliceType'+selection);
 
+                //sets nv to desired slice type
                 nv.setSliceType(type);
             }
 
             function draw() {
+                //brush tool CURRENTLY NOT WORKING NEEDS TO BE INSIDE ONLOAD
                 nv.setDrawingEnabled(1);
             }
 
@@ -48,6 +54,7 @@
 
     </head>
     <body>
+        <!--create the selectview box (calls changeview() to work)-->
         <select id='view' onclick='javascript:changeview()' style='position:absolute;top:2px;left:2px;z-index:1000;'>
             <option value='axial'>Axial</option>
             <option value='coronal' selected>Coronal</option>
@@ -56,3 +63,4 @@
         <canvas id="viewer" style="width: 100%; height:100%"></canvas>
     </body>
 </html> 
+
