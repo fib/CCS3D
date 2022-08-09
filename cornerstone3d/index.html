@@ -3,9 +3,7 @@
     <script type="text/javascript" src="cornerstone3d.js"></script>
     <script type="text/javascript" src="https://unpkg.com/cornerstone-wado-image-loader"></script>
     <script type="text/javascript" src="https://unpkg.com/dicom-parser"></script>
-    <script src="https://unpkg.com/cornerstone-math"></script>
-    <script src="https://unpkg.com/cornerstone-tools"></script>
-    <script src="https://unpkg.com/hammerjs"></script>
+
     <script>
 
         cornerstoneWADOImageLoader.external.cornerstone = cornerstone3dCore;
@@ -24,17 +22,19 @@
 
             setup();
 
-
         };
+
+
 
         function setup() {
 
-            const renderingEngineId = 'r';
+            renderingEngineId = 'r';
             renderingEngine = new cornerstone3dCore.RenderingEngine(renderingEngineId);
 
-            const viewportId = 'viewer';
+            viewportId = 'v';
 
             element = document.getElementById('viewer');
+            element.oncontextmenu = (e) => e.preventDefault();
 
             viewportInput = {
                 viewportId,
@@ -42,10 +42,34 @@
                 type: cornerstone3dCore.Enums.ViewportType.STACK,
             };
 
+
+            var T = cornerstone3dTools;
+            T.addTool(T.MagnifyTool);
+            T.addTool(T.StackScrollMouseWheelTool);
+            T.addTool(T.ZoomTool);
+
+            var g = T.ToolGroupManager.createToolGroup('t');
+            g.addTool(T.StackScrollMouseWheelTool.toolName);
+            g.addTool(T.ZoomTool.toolName);
+
+            g.setToolActive(T.ZoomTool.toolName, {
+              bindings: [
+                {
+                  mouseButton: T.Enums.MouseBindings.Secondary, // Right Click
+                },
+              ],
+            });
+            g.setToolActive(T.StackScrollMouseWheelTool.toolName);
+
+
+
             renderingEngine.enableElement(viewportInput);
 
+            g.addViewport(viewportId, renderingEngineId);
 
         };
+
+
 
         function onDragOver(e) {
 
@@ -54,6 +78,8 @@
             e.preventDefault();
 
         };
+
+
 
         function onDrop(e) {
 
@@ -67,27 +93,25 @@
                 imageIds.push(cornerstoneWADOImageLoader.wadouri.fileManager.add(files[f]));
             }
 
-            // file = files[0];
-            // imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-
             load_volume();
 
         }
 
+
+
         async function load_volume() {
 
-            var viewport = renderingEngine.getViewport('viewer');
+            var viewport = renderingEngine.getViewport(viewportId);
 
-            viewport.setStack(imageIds).then(() => {
-                viewport.render();
-            });
+            // var stack = { currentImageIdIndex: 0, imageIds: imageIds };
 
+            viewport.setStack(imageIds);
 
-            var stack = { currentImageIdIndex: 0, imageIds: imageIds };
-            cornerstoneTools.addStackStateManager(viewportInput.element, ["stack"]);
-            cornerstoneTools.addToolState(viewportInput, "stack", stack);
-
+            viewport.render();
+            
         }
+
+
 
         run();
         
