@@ -20,7 +20,8 @@
                 nv.attachTo(`viewer`);
                 //set default view to coronal
                 nv.setSliceType(nv.sliceTypeCoronal);
-                
+                //dissable crosshair
+                nv.setCrosshairColor([0, 0, 0, 0])
             };
 
             function onDragOver(e) {
