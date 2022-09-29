@@ -61,6 +61,44 @@
 
         }
 
+        /*
+            taken from https://github.com/niivue/niivue/blob/88ca863cd8e6a6161c674b94e7dcca4116a2ba16/src/niivue.js#L1843
+            because for some reason it's uncallable from the niivue file
+
+            nv.drawUndoBitmaps are run-length encoded
+            this function returns a decoded, flattened bitmap
+        */
+        function decodeRLE(rle, decodedlen) {
+            let r = new Uint8Array(rle.buffer);
+            let rI = new Int8Array(r.buffer); //typecast as header can be negative
+            let rp = 0; //input position in rle array
+            //d: output uncompressed data array
+            let d = new Uint8Array(decodedlen);
+            let dp = 0; //output position in decoded array
+            while (rp < r.length) {
+                //read header
+                let hdr = rI[rp];
+                rp++;
+                if (hdr < 0) {
+                    //write run
+                    let v = rI[rp];
+                    rp++;
+                    for (let i = 0; i < 1 - hdr; i++) {
+                        d[dp] = v;
+                        dp++;
+                    }
+                } else {
+                    //write literal
+                    for (let i = 0; i < hdr + 1; i++) {
+                        d[dp] = rI[rp];
+                        rp++;
+                        dp++;
+                    }
+                } //if run else literal
+            } //while rp < r.length
+            return d;
+        }
+
         function getXYZ(x, y, z) {
 
             // copy from nv.drawPt
