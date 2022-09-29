@@ -67,6 +67,9 @@
 
             nv.drawUndoBitmaps are run-length encoded
             this function returns a decoded, flattened bitmap
+
+            rle: encoded bitmap
+            decodelen: decoded length (usually nv.drawBitmap.length)
         */
         function decodeRLE(rle, decodedlen) {
             let r = new Uint8Array(rle.buffer);
