@@ -24,6 +24,14 @@
             //dissable crosshair
             nv.setCrosshairColor([0, 0, 0, 0])
 
+            lastAnnotation = [];
+
+            document.body.addEventListener('mouseup', (e) => {
+                mergeAnnotation(lastAnnotation);
+
+                lastAnnotation = [];
+            });
+
             nv.opts.onLocationChange = function (e) {
 
                 if (!nv.opts.drawingEnabled) {
@@ -66,19 +74,24 @@
             if (nv.sliceType == 0 || nv.sliceType == 1) {
                 // coronal and axial views
                 for (var i = 0; i < 5; i++) {
-                    nv.drawPt(x + i, y, z, 1);
-                    nv.drawPt(x - i, y, z, 1);
+                    nv.drawPt(x + i, y, z, label);
+                    nv.drawPt(x - i, y, z, label);
+
+                    lastAnnotation.push({ x: x + i, y, z });
+                    lastAnnotation.push({ x: x - i, y, z });
                 }
             } else {
                 // sagittal view
                 for (var i = 0; i < 5; i++) {
-                    nv.drawPt(x, y + i, z, 1);
-                    nv.drawPt(x, y - i, z, 1);
+                    nv.drawPt(x, y + i, z, label);
+                    nv.drawPt(x, y - i, z, label);
+
+                    lastAnnotation.push({ x, y: y + i, z });
+                    lastAnnotation.push({ x, y: y - i, z });
                 }
             }
 
             nv.refreshDrawing();
-
         }
 
         function onDragOver(e) {
