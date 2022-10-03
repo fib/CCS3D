@@ -144,6 +144,16 @@
             return nv.drawBitmap[x + y * dx + z * dx * dy];
         };
 
+        function setPixel(x, y, z, label) {
+            let dx = nv.back.dims[1];
+            let dy = nv.back.dims[2];
+            let dz = nv.back.dims[3];
+            x = Math.min(Math.max(x, 0), dx - 1);
+            y = Math.min(Math.max(y, 0), dy - 1);
+            z = Math.min(Math.max(z, 0), dz - 1);
+            return nv.drawBitmap[x + y * dx + z * dx * dy] = label;
+        }
+
         function getXYZ(x, y, z) {
 
             // copy from nv.drawPt
