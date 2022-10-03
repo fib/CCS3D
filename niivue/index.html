@@ -34,23 +34,29 @@
                 y = e.vox[1];
                 z = e.vox[2];
 
-                // thicker brush strokes
-                if (nv.sliceType == 0 || nv.sliceType == 1) {
-                    // coronal and axial views
-                    for (var i = 0; i < 5; i++) {
-                        nv.drawPt(x + i, y, z, 1);
-                        nv.drawPt(x - i, y, z, 1);
-                    }
-                } else {// sagittal view
-                    for (var i = 0; i < 5; i++) {
-                        nv.drawPt(x, y + i, z, 1);
-                        nv.drawPt(x, y - i, z, 1);
-                    }
-                }
-
-                nv.refreshDrawing();
+                draw_brush(x, y, z, 1, 5);
             }
         };
+
+        // a helper for drawing brushstrokes with brush size
+        function draw_brush(x, y, z, label, size) {
+            // thicker brush strokes
+            if (nv.sliceType == 0 || nv.sliceType == 1) {
+                // coronal and axial views
+                for (var i = 0; i < 5; i++) {
+                    nv.drawPt(x + i, y, z, 1);
+                    nv.drawPt(x - i, y, z, 1);
+                }
+            } else {// sagittal view
+                for (var i = 0; i < 5; i++) {
+                    nv.drawPt(x, y + i, z, 1);
+                    nv.drawPt(x, y - i, z, 1);
+                }
+            }
+
+            nv.refreshDrawing();
+
+        }
 
         function onDragOver(e) {
             // stop browser processing right away
