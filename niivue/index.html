@@ -23,6 +23,33 @@
             nv.setSliceType(nv.sliceTypeCoronal);
             //dissable crosshair
             nv.setCrosshairColor([0, 0, 0, 0])
+
+            nv.opts.onLocationChange = function (e) {
+
+                if (!nv.opts.drawingEnabled) {
+                    nv.setDrawingEnabled(1);
+                }
+
+                x = e.vox[0];
+                y = e.vox[1];
+                z = e.vox[2];
+
+                // thicker brush strokes
+                if (nv.sliceType == 0 || nv.sliceType == 1) {
+                    // coronal and axial views
+                    for (var i = 0; i < 5; i++) {
+                        nv.drawPt(x + i, y, z, 1);
+                        nv.drawPt(x - i, y, z, 1);
+                    }
+                } else {// sagittal view
+                    for (var i = 0; i < 5; i++) {
+                        nv.drawPt(x, y + i, z, 1);
+                        nv.drawPt(x, y - i, z, 1);
+                    }
+                }
+
+                nv.refreshDrawing();
+            }
         };
 
         function onDragOver(e) {
