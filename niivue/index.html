@@ -60,7 +60,7 @@
                 y = e.vox[1];
                 z = e.vox[2];
 
-                draw_brush(x, y, z, nv.opts.penValue, 5);
+                drawBrush(x, y, z, nv.opts.penValue, 5);
             }
         };
 
@@ -87,7 +87,7 @@
         }
 
         // a helper for drawing brushstrokes with brush size
-        function draw_brush(x, y, z, label, size) {
+        function drawBrush(x, y, z, label, size) {
             // thicker brush strokes
             if (nv.sliceType == 0 || nv.sliceType == 1) {
                 // coronal and axial views
@@ -118,7 +118,7 @@
             e.preventDefault();
         };
 
-        function changeview() {
+        function changeView() {
             //gets the viewer box text for calling the setslicetype 
             var combobox = document.getElementById('view');
             var selection = combobox.selectedOptions[0].outerText;
@@ -133,17 +133,6 @@
         function draw() {
             //brush tool CURRENTLY NOT WORKING NEEDS TO BE INSIDE ONLOAD
             nv.setDrawingEnabled(1);
-        }
-
-
-        window.onmouseup = function () {
-
-            // get position of last drawn pixel
-
-            // search neighborhood
-            // access the array with getXYZ()
-
-
         }
 
         /*
@@ -265,7 +254,7 @@
 
 <body>
     <div id="toolbar">
-        <select id="view" onclick="changeview()">
+        <select id="view" onclick="changeView()">
             <option value="axial">Axial</option>
             <option value="coronal">Coronal</option>
             <option value="sagittal">Sagittal</option>
