@@ -221,24 +221,63 @@
         }
 
     </script>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: white;
+        }
 
+        #toolbar {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+
+            height: 2%;
+            background-color: #272727;
+            padding: 15px;
+        }
+
+        #colorTool {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #colorIndicator {
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            background-color: red;
+        }
+
+        #viewerContainer {
+            width: 100%;
+            height: 98%;
+            position: fixed;
+        }
+
+        #viewer {
+            border: none;
+            outline: none;
+        }
+    </style>
 </head>
 
-<body style="font-family: sans-serif; color: white">
-    <div style="display: flex; gap: 30px; align-items: center; background-color: #272727; padding: 15px; height: 2%">
+<body>
+    <div id="toolbar">
         <select id="view" onclick="changeview()">
             <option value="axial">Axial</option>
             <option value="coronal">Coronal</option>
             <option value="sagittal">Sagittal</option>
         </select>
-        <span style="display: flex; align-items: center; gap: 5px">
+        <span id="colorTool">
             <a id="activeColor">Label Color: </a>
-            <span id="colorIndicator" style="width: 25px; height: 25px; display: inline-block; background-color: red;">
+            <span id="colorIndicator">
             </span>
         </span>
     </div>
-    <div style="width: 100%; height:98%; position: fixed">
-        <canvas style="border: none; outline: none" id="viewer"></canvas>
+    <div id="viewerContainer">
+        <canvas id="viewer"></canvas>
     </div>
 
 </body>
