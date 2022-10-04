@@ -76,12 +76,12 @@
                     ((label = getPixel(x, y - 1, z)) > 0 && label != nv.opts.penValue) ||
                     ((label = getPixel(x, y, z + 1)) > 0 && label != nv.opts.penValue) ||
                     ((label = getPixel(x, y, z - 1)) > 0 && label != nv.opts.penValue)
-                    ) {
+                ) {
 
-                    newAnnotation.map((p) => {setPixel(p.x, p.y, p.z, label)});
+                    newAnnotation.map((p) => { setPixel(p.x, p.y, p.z, label) });
                     nv.refreshDrawing();
 
-                    break;                    
+                    break;
                 }
             }
         }
@@ -233,7 +233,8 @@
         </select>
         <span style="display: flex; align-items: center; gap: 5px">
             <a id="activeColor">Label Color: </a>
-            <span id="colorIndicator" style="width: 25px; height: 25px; display: inline-block; background-color: red;"></span>
+            <span id="colorIndicator" style="width: 25px; height: 25px; display: inline-block; background-color: red;">
+            </span>
         </span>
     </div>
     <div style="width: 100%; height:98%; position: fixed">
