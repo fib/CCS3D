@@ -26,9 +26,7 @@
             lastAnnotation = [];
 
             document.body.addEventListener('mouseup', (e) => {
-                mergeAnnotation(lastAnnotation);
 
-                lastAnnotation = [];
             });
 
             document.addEventListener('keydown', keyboardShortcuts);
@@ -57,28 +55,6 @@
             }
         };
 
-        function mergeAnnotation(newAnnotation) {
-            for (let i = 0; i < newAnnotation.length; i++) {
-                let pixel = newAnnotation[i];
-                const { x, y, z } = pixel;
-
-                if (
-                    ((label = getPixel(x - 1, y, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x + 1, y, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y + 1, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y - 1, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y, z + 1)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y, z - 1)) > 0 && label != nv.opts.penValue)
-                ) {
-
-                    newAnnotation.map((p) => { setPixel(p.x, p.y, p.z, label) });
-                    nv.refreshDrawing();
-
-                    break;
-                }
-            }
-        }
-
         // a helper for drawing brushstrokes with brush size
         function drawBrush(x, y, z, label, size) {
             // thicker brush strokes
@@ -87,18 +63,12 @@
                 for (var i = 0; i < 5; i++) {
                     nv.drawPt(x + i, y, z, label);
                     nv.drawPt(x - i, y, z, label);
-
-                    lastAnnotation.push({ x: x + i, y, z });
-                    lastAnnotation.push({ x: x - i, y, z });
                 }
             } else {
                 // sagittal view
                 for (var i = 0; i < 5; i++) {
                     nv.drawPt(x, y + i, z, label);
                     nv.drawPt(x, y - i, z, label);
-
-                    lastAnnotation.push({ x, y: y + i, z });
-                    lastAnnotation.push({ x, y: y - i, z });
                 }
             }
 
