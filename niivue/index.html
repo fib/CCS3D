@@ -26,8 +26,15 @@
             lastAnnotation = [];
 
             document.body.addEventListener('mouseup', (e) => {
-
+                floodMerge(nv.frac2vox(nv.scene.crosshairPos));
             });
+
+            // receives a point and begins traversing adjacent labeled voxels.
+            // once a new label is encountered, traverse backwards and inherit
+            // new label for all voxels
+            function floodMerge(current_pos) {
+                console.log(current_pos);
+            }
 
             document.addEventListener('keydown', keyboardShortcuts);
 
