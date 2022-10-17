@@ -26,10 +26,51 @@
             lastAnnotation = [];
 
             document.body.addEventListener('mouseup', (e) => {
-                mergeAnnotation(lastAnnotation);
-
-                lastAnnotation = [];
+                floodMerge(nv.frac2vox(nv.scene.crosshairPos), nv.opts.penValue);
             });
+
+            // receives a point and begins traversing adjacent labeled voxels.
+            // once a new label is encountered, traverse backwards and inherit
+            // new label for all voxels
+            function floodMerge(initPos, initColor) {
+                console.log(initPos);
+                console.log(initColor);
+                console.log('================');
+
+                let cur = initPos;
+                let curLabel = getPixel(...cur);
+
+                // find new label
+                while (curLabel == initColor) {
+                    
+                } 
+
+                // traverses adjacent annotated labels until
+                // a new label is encountered
+                function traverseToNewLabel(cur, label) {
+                    let [x, y, z] = cur;
+                    let curLabel = getPixel(...cur);
+
+                    console.log(cur);
+
+                    
+                    if (curLabel != initColor && curLabel != 0) {
+                        console.log(`new label: ${curLabel}`);
+                        return true;
+                    }
+
+                    if (getPixel(x + 1, y, z) != 0) traverseToNewLabel([x + 1, y, z]);
+                    if (getPixel(x, y + 1, z) != 0) traverseToNewLabel([x, y + 1, z]);
+                    if (getPixel(x, y, z + 1) != 0) traverseToNewLabel([x, y, z + 1]);
+                    if (getPixel(x - 1, y, z) != 0) traverseToNewLabel([x - 1, y, z]);
+                    if (getPixel(x, y - 1, z) != 0) traverseToNewLabel([x, y - 1, z]);
+                    if (getPixel(x, y, z - 1) != 0) traverseToNewLabel([x, y, z - 1]);
+
+                    return false;
+                }
+
+                //console.log(traverseToNewLabel(cur, initColor));
+            }
 
             document.addEventListener('keydown', keyboardShortcuts);
 
@@ -57,28 +98,6 @@
             }
         };
 
-        function mergeAnnotation(newAnnotation) {
-            for (let i = 0; i < newAnnotation.length; i++) {
-                let pixel = newAnnotation[i];
-                const { x, y, z } = pixel;
-
-                if (
-                    ((label = getPixel(x - 1, y, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x + 1, y, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y + 1, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y - 1, z)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y, z + 1)) > 0 && label != nv.opts.penValue) ||
-                    ((label = getPixel(x, y, z - 1)) > 0 && label != nv.opts.penValue)
-                ) {
-
-                    newAnnotation.map((p) => { setPixel(p.x, p.y, p.z, label) });
-                    nv.refreshDrawing();
-
-                    break;
-                }
-            }
-        }
-
         // a helper for drawing brushstrokes with brush size
         function drawBrush(x, y, z, label, size) {
             // thicker brush strokes
@@ -87,18 +106,12 @@
                 for (var i = 0; i < 5; i++) {
                     nv.drawPt(x + i, y, z, label);
                     nv.drawPt(x - i, y, z, label);
-
-                    lastAnnotation.push({ x: x + i, y, z });
-                    lastAnnotation.push({ x: x - i, y, z });
                 }
             } else {
                 // sagittal view
                 for (var i = 0; i < 5; i++) {
                     nv.drawPt(x, y + i, z, label);
                     nv.drawPt(x, y - i, z, label);
-
-                    lastAnnotation.push({ x, y: y + i, z });
-                    lastAnnotation.push({ x, y: y - i, z });
                 }
             }
 
