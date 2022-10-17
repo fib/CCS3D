@@ -26,14 +26,50 @@
             lastAnnotation = [];
 
             document.body.addEventListener('mouseup', (e) => {
-                floodMerge(nv.frac2vox(nv.scene.crosshairPos));
+                floodMerge(nv.frac2vox(nv.scene.crosshairPos), nv.opts.penValue);
             });
 
             // receives a point and begins traversing adjacent labeled voxels.
             // once a new label is encountered, traverse backwards and inherit
             // new label for all voxels
-            function floodMerge(current_pos) {
-                console.log(current_pos);
+            function floodMerge(initPos, initColor) {
+                console.log(initPos);
+                console.log(initColor);
+                console.log('================');
+
+                let cur = initPos;
+                let curLabel = getPixel(...cur);
+
+                // find new label
+                while (curLabel == initColor) {
+                    
+                } 
+
+                // traverses adjacent annotated labels until
+                // a new label is encountered
+                function traverseToNewLabel(cur, label) {
+                    let [x, y, z] = cur;
+                    let curLabel = getPixel(...cur);
+
+                    console.log(cur);
+
+                    
+                    if (curLabel != initColor && curLabel != 0) {
+                        console.log(`new label: ${curLabel}`);
+                        return true;
+                    }
+
+                    if (getPixel(x + 1, y, z) != 0) traverseToNewLabel([x + 1, y, z]);
+                    if (getPixel(x, y + 1, z) != 0) traverseToNewLabel([x, y + 1, z]);
+                    if (getPixel(x, y, z + 1) != 0) traverseToNewLabel([x, y, z + 1]);
+                    if (getPixel(x - 1, y, z) != 0) traverseToNewLabel([x - 1, y, z]);
+                    if (getPixel(x, y - 1, z) != 0) traverseToNewLabel([x, y - 1, z]);
+                    if (getPixel(x, y, z - 1) != 0) traverseToNewLabel([x, y, z - 1]);
+
+                    return false;
+                }
+
+                //console.log(traverseToNewLabel(cur, initColor));
             }
 
             document.addEventListener('keydown', keyboardShortcuts);
